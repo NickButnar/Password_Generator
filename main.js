@@ -1,30 +1,30 @@
-let pswrdLength = prompt("Желаемая длина пароля (введите количество символов)");
-console.log(pswrdLength);
+function donePassword(pswrdLength) {
+  const numCHars = "0123456789";
+  const symbolChars = "!@#$%^&*()";
+  const letterChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  allChars = numCHars + symbolChars + letterChars;
+  noNumberChars = symbolChars + letterChars;
 
-let numbers = prompt("Использовать цифры? (Ответ: Да или Нет)");
-console.log(numbers);
+  numbers = true; //false
+  let password = "";
 
-const numCHars = "0123456789";
-const symbolChars = "!@#$%^&*()";
-const letterChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-allChars = numCHars + symbolChars + letterChars;
-noNumberChars = symbolChars + letterChars;
+  if (numbers === true) {
+    for (let i = 0; i < pswrdLength; i++) {
+      let randomNumber = Math.floor(Math.random() * allChars.length);
 
-let password = "";
-
-if (numbers === "Да") {
-  for (let i = 0; i < pswrdLength; i++) {
-    let randomNumber = Math.floor(Math.random() * allChars.length);
-
-    password += allChars[randomNumber];
+      password += allChars[randomNumber];
+    }
+    return password;
   }
-  console.log(password);
-}
-if (numbers === "Нет") {
-  for (let i = 0; i < pswrdLength; i++) {
-    let randomNumber = Math.floor(Math.random() * noNumberChars.length);
+  if (numbers === false) {
+    for (let i = 0; i < pswrdLength; i++) {
+      let randomNumber = Math.floor(Math.random() * noNumberChars.length);
 
-    password += noNumberChars[randomNumber];
+      password += noNumberChars[randomNumber];
+    }
+    return password;
   }
-  console.log(password);
 }
+console.log(donePassword(12));
+
+// export function donePassword(pswrdLength);
