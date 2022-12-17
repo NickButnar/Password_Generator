@@ -15,8 +15,8 @@ const donePassword = (passwordLength, number) => {
     }
   }
 
-  if (number === 0) {
-    for (let i = 0; i < passwordLength; i++) {
+  if (number === 0 || number <= passwordLength) {
+    for (let i = 0; i < passwordLength - number; i++) {
       let randomNumberOfLetters = Math.floor(
         Math.random() * letterChars.length
       );
@@ -28,6 +28,6 @@ const donePassword = (passwordLength, number) => {
   return resultDonePassword;
 };
 
-console.log(donePassword(6, 0));
+console.log(donePassword(6, 2));
 
 export default { donePassword };
