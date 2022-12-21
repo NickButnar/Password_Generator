@@ -78,13 +78,13 @@ const checkError = (options) => {
 
 function generatePassword(options) {
   let password = "";
+  checkError(options);
 
   ALLCHARS.forEach(function (element) {
-    checkError(options);
     const RandomIndexOfElement = Math.floor(Math.random() * ALLCHARS.length);
     password += ALLCHARS[RandomIndexOfElement];
-    return password;
   });
+  return password;
 }
 
 console.log(generatePassword(options));
