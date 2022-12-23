@@ -1,61 +1,12 @@
-const LETTERCHARS = [
-  "a",
-  "b",
-  "c",
-  "d",
-  "e",
-  "f",
-  "g",
-  "h",
-  "i",
-  "j",
-  "k",
-  "l",
-  "m",
-  "n",
-  "o",
-  "p",
-  "q",
-  "r",
-  "s",
-  "t",
-  "u",
-  "v",
-  "w",
-  "x",
-  "y",
-  "z",
-  "A",
-  "B",
-  "C",
-  "D",
-  "E",
-  "F",
-  "G",
-  "H",
-  "I",
-  "J",
-  "K",
-  "L",
-  "M",
-  "N",
-  "O",
-  "P",
-  "Q",
-  "R",
-  "S",
-  "T",
-  "U",
-  "V",
-  "W",
-  "X",
-  "Y",
-  "Z",
-];
+const letter = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+
+const LETTERCHARS = Array.from(letter);
 const NUMBERCHARS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 const SYMBOLCHARS = ["!", "@", "#", "$", "%", "^", "&", "*", "_", "+"];
 
-const ALLCHARS = [LETTERCHARS + NUMBERCHARS + SYMBOLCHARS];
+const ALLCHARS = [...LETTERCHARS, ...NUMBERCHARS, ...SYMBOLCHARS];
+
+let PASSWORD = "";
 
 const options = {
   passwordLength: 12,
@@ -64,29 +15,34 @@ const options = {
 };
 
 const checkError = (options) => {
-  const { passwordLength, numbers, symbols } = options;
-  if (numbers + symbols > passwordLength) {
-    throw new Error("Сумма цифр и символов превышает длину пароля");
+  if (typeof options == "undefined") {
+    options = {
+      passwordLength: 12,
+      numbers: true,
+      symbols: true,
+    };
   }
 
-  if (numbers == false && symbols == false) {
-    throw new Error(
-      "Цифры и символы имеют значение False. Нет допустимых символов для генерации пароля"
-    );
+  if (typeof options["numbers"] !== "boolean") {
+    throw new Error("Значения numbers и symbols должны быть типа boolean");
+  }
+  if (typeof options["symbols"] !== "boolean") {
+    throw new Error("Значения numbers и symbols должны быть типа boolean");
   }
 };
 
-function generatePassword(options) {
-  let password = "";
-  checkError(options);
+const getRandomIndexOfElement = () => {
+  const randomIndex = Math.floor(Math.random() * ALLCHARS.length);
+  PASSWORD += ALLCHARS[randomIndex];
+};
 
-  ALLCHARS.forEach(function (element) {
-    const RandomIndexOfElement = Math.floor(Math.random() * ALLCHARS.length);
-    password += ALLCHARS[RandomIndexOfElement];
-  });
-  return password;
+function generatePassword(options) {
+  checkError(options);
+  Array.from({ length: 12 }, getRandomIndexOfElement);
+  getRandomIndexOfElement(NUMBERCHARS);
+  return PASSWORD;
 }
 
-console.log(generatePassword(options));
+console.log(generatePassword());
 
-export default { checkError, generatePassword };
+export default generatePassword;
