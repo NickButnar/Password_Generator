@@ -6,6 +6,8 @@ const NUMBERCHARS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 const SYMBOLCHARS = ["!", "@", "#", "$", "%", "^", "&", "*", "_", "+"];
 
 const ALLCHARS = [...LETTERCHARS, ...NUMBERCHARS, ...SYMBOLCHARS];
+const NO_NUMBERS_ARRAY = [...LETTERCHARS, ...SYMBOLCHARS];
+const NO_SYMBOLS_ARRAY = [...LETTERCHARS, ...NUMBERCHARS];
 
 const checkError = (options) => {
   if (typeof options["numbers"] !== "boolean") {
@@ -14,7 +16,6 @@ const checkError = (options) => {
   if (typeof options["symbols"] !== "boolean") {
     throw new Error("Значения numbers и symbols должны быть типа boolean");
   }
-
   if (typeof options["passwordLength"] !== "number") {
     throw new Error("Значение passwordLength должно быть типа number");
   }
@@ -29,42 +30,42 @@ const prepareOptions = (options) => {
   };
 };
 
-const getRandomIndexOfElement = (item, options) => {
-  if (options.numbers && options.symbols == true) {
-    const randomIndex = Math.floor(Math.random() * ALLCHARS.length);
-    return ALLCHARS[randomIndex];
+const getRandomIndexOfArray = (array) => {
+  const randomIndex = Math.floor(Math.random() * array.length);
+  return array[randomIndex];
+};
+
+const fillPasswordArray = (item, options) => {
+  if (!options.numbers && !options.symbols) {
+    return getRandomIndexOfArray(LETTERCHARS);
   }
 
-  if (options.numbers == false) {
-    const randomIndex = Math.floor(
-      Math.random() * (LETTERCHARS.length + SYMBOLCHARS.length)
-    );
-    return (LETTERCHARS.length + SYMBOLCHARS.length)[randomIndex];
-  }
-  if (options.symbols == false) {
-    const randomIndex = Math.floor(
-      Math.random() * (LETTERCHARS.length + NUMBERCHARS.length)
-    );
-    return (LETTERCHARS.length + NUMBERCHARS.length)[randomIndex];
+  if (!options.numbers) {
+    return getRandomIndexOfArray(NO_NUMBERS_ARRAY);
   }
 
-  if (options.numbers && options.symbols == false) {
-    const randomIndex = Math.floor(Math.random() * LETTERCHARS.length);
-    return LETTERCHARS.length[randomIndex];
+  if (!options.symbols) {
+    return getRandomIndexOfArray(NO_SYMBOLS_ARRAY);
   }
+
+  return getRandomIndexOfArray(ALLCHARS);
 };
 
 function generatePassword(options) {
-  let password = "";
   const preparedOptions = prepareOptions(options);
+
   checkError(preparedOptions);
-  password = Array.from({ length: preparedOptions.passwordLength }, (x) =>
-    getRandomIndexOfElement(x, preparedOptions)
+
+  const passwordArray = Array.from(
+    { length: preparedOptions.passwordLength },
+    (x) => fillPasswordArray(x, preparedOptions)
   );
 
-  return password.join("");
+  return passwordArray.join("");
 }
 
-console.log(generatePassword(prepareOptions));
+console.log(
+  generatePassword({ passwordLength: 12, numbers: true, symbols: true })
+);
 
 export default generatePassword;
