@@ -18,6 +18,8 @@
 
 --- Вызов функции/запуск генератора ---
 
+Установить в интерпетатор Live Server от Ritwick Dey. Открыть файл index.html --> правая кнопка мыши --> open with Live Server --> ctrl + s. Откроется браузер по умолчанию. F12 --> console
+
 a) console.log(generatePassword()) --> свойства не переданы(passwordLength, numbers, symbols).
 Свойства по умолчанию: длина пароля: 12, цифры и символы используются.
 
